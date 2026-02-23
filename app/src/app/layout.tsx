@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Kavova Anketa',
-  description: 'Kolik salku kavy denne je jeste normalni?',
+  title: 'Kávová Anketa',
+  description: 'Kolik šálků kávy denně je ještě normální?',
 }
 
 export default function RootLayout({

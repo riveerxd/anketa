@@ -60,7 +60,7 @@ export default function Home() {
   const [hasVoted, setHasVoted] = useState(false);
   const [checkingVote, setCheckingVote] = useState(true);
 
-  const question = 'Kolik salku kavy denne je jeste normalni?';
+  const question = 'Kolik šálků kávy denně je ještě normální?';
 
   // Initialize voter ID cookie
   useEffect(() => {
@@ -132,16 +132,16 @@ export default function Home() {
         setResults(data.data);
         setShowResults(true);
         setHasVoted(true);
-        setMessage({ type: 'success', text: 'Hlas byl zaznamenan!' });
+        setMessage({ type: 'success', text: 'Hlas byl zaznamenán!' });
       } else {
         if (data.alreadyVoted) {
           setHasVoted(true);
           setShowResults(true);
         }
-        setMessage({ type: 'error', text: data.error || 'Neco se pokazilo' });
+        setMessage({ type: 'error', text: data.error || 'Něco se pokazilo' });
       }
     } catch (err) {
-      setMessage({ type: 'error', text: 'Chyba pripojeni k serveru' });
+      setMessage({ type: 'error', text: 'Chyba připojení k serveru' });
     } finally {
       setLoading(false);
     }
@@ -171,7 +171,7 @@ export default function Home() {
       const data = await res.json();
 
       if (data.success) {
-        setMessage({ type: 'success', text: 'Hlasovani bylo resetovano!' });
+        setMessage({ type: 'success', text: 'Hlasování bylo resetováno!' });
         setResetToken('');
         setSelectedOption(null);
         setShowReset(false);
@@ -181,7 +181,7 @@ export default function Home() {
         setMessage({ type: 'error', text: data.error || 'Reset selhal' });
       }
     } catch (err) {
-      setMessage({ type: 'error', text: 'Chyba pripojeni k serveru' });
+      setMessage({ type: 'error', text: 'Chyba připojení k serveru' });
     } finally {
       setLoading(false);
     }
@@ -190,7 +190,7 @@ export default function Home() {
   if (checkingVote) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-slate-500">Nacitani...</div>
+        <div className="text-slate-500">Načítání...</div>
       </div>
     );
   }
@@ -205,8 +205,8 @@ export default function Home() {
               <Coffee className="w-6 h-6 text-amber-700" />
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-slate-900">Kavova Anketa</h1>
-              <p className="text-sm text-slate-500">Hlasuj a zjisti, co si mysli ostatni</p>
+              <h1 className="text-xl font-semibold text-slate-900">Kávová Anketa</h1>
+              <p className="text-sm text-slate-500">Hlasuj a zjisti, co si myslí ostatní</p>
             </div>
           </div>
         </div>
@@ -233,7 +233,7 @@ export default function Home() {
         {hasVoted && (
           <div className="mb-6 px-4 py-3 rounded-lg flex items-center gap-3 bg-blue-50 text-blue-800 border border-blue-200">
             <CheckCircle2 className="w-5 h-5 text-blue-600" />
-            <span className="text-sm font-medium">Uz jste hlasoval/a. Dekujeme za vas hlas!</span>
+            <span className="text-sm font-medium">Už jste hlasoval/a. Děkujeme za váš hlas!</span>
           </div>
         )}
 
@@ -289,14 +289,14 @@ export default function Home() {
               )}
             >
               <Vote className="w-4 h-4" />
-              {hasVoted ? 'Uz jste hlasoval/a' : loading ? 'Odesilam...' : 'Hlasovat'}
+              {hasVoted ? 'Už jste hlasoval/a' : loading ? 'Odesílám...' : 'Hlasovat'}
             </button>
             <button
               onClick={handleShowResults}
               className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium transition-colors border border-slate-200 text-slate-700 hover:bg-slate-50"
             >
               <BarChart3 className="w-4 h-4" />
-              Vysledky
+              Výsledky
             </button>
           </div>
         </div>
@@ -306,9 +306,9 @@ export default function Home() {
           <div className="mt-6 bg-white rounded-xl border shadow-sm animate-in fade-in slide-in-from-bottom-2">
             <div className="p-6 border-b flex items-center gap-2">
               <BarChart3 className="w-5 h-5 text-slate-500" />
-              <h3 className="font-semibold text-slate-900">Vysledky</h3>
+              <h3 className="font-semibold text-slate-900">Výsledky</h3>
               <span className="ml-auto text-sm text-slate-500">
-                {results.totalVotes} {results.totalVotes === 1 ? 'hlas' : results.totalVotes < 5 ? 'hlasy' : 'hlasu'}
+                {results.totalVotes} {results.totalVotes === 1 ? 'hlas' : results.totalVotes < 5 ? 'hlasy' : 'hlasů'}
               </span>
             </div>
 
@@ -333,7 +333,7 @@ export default function Home() {
                       />
                     </div>
                     <div className="mt-1 text-xs text-slate-500">
-                      {option.votes} {option.votes === 1 ? 'hlas' : option.votes < 5 ? 'hlasy' : 'hlasu'}
+                      {option.votes} {option.votes === 1 ? 'hlas' : option.votes < 5 ? 'hlasy' : 'hlasů'}
                     </div>
                   </div>
                 );
@@ -383,11 +383,11 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t bg-white mt-auto">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-center gap-4 text-sm text-slate-500">
-          <span>2026 Kavova Anketa</span>
+          <span>2026 Kávová Anketa</span>
           <span className="text-slate-300">|</span>
           <Link href="/about" className="inline-flex items-center gap-1 hover:text-slate-700 transition-colors">
             <Info className="w-3.5 h-3.5" />
-            O ankete
+            O anketě
           </Link>
         </div>
       </footer>

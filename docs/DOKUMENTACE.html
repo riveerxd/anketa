@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kávová Anketa - Technická dokumentace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1e293b;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            font-size: 14px;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #0f172a;
+            border-bottom: 3px solid #0f172a;
+            padding-bottom: 10px;
+        }
+        h2 {
+            font-size: 20px;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            color: #1e293b;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        h3 {
+            font-size: 16px;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            color: #334155;
+        }
+        p {
+            margin-bottom: 12px;
+        }
+        .meta {
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+        }
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 16px 0;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        .diagram {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .diagram-placeholder {
+            color: #64748b;
+            font-style: italic;
+        }
+        ul, ol {
+            margin: 12px 0;
+            padding-left: 24px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        .checkbox {
+            color: #16a34a;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 30px 0;
+        }
+        .flow {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+            white-space: pre;
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        @media print {
+            body {
+                padding: 20px;
+            }
+            h2 {
+                page-break-before: auto;
+            }
+            pre, .diagram {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Kávová Anketa</h1>
+<p class="meta">
+    Technická dokumentace<br>
+    <strong>URL:</strong> https://anketa.riveer.cz<br>
+    <strong>Datum:</strong> Únor 2026
+</p>
+
+<hr>
+
+<h2>1. Přehled projektu</h2>
+<p>Jednoduchá webová anketa s jednou otázkou, možností hlasování, zobrazení výsledků a administrátorským resetem. Každý uživatel může hlasovat pouze jednou.</p>
+
+<p><strong>Otázka ankety:</strong> "Kolik šálků kávy denně je ještě normální?"</p>
+
+<table>
+    <tr><th>Možnost</th><th>Odpověď</th></tr>
+    <tr><td>A</td><td>0 - Káva je pro slabochy</td></tr>
+    <tr><td>B</td><td>1-2 - Rozumná dávka</td></tr>
+    <tr><td>C</td><td>3-4 - Produktivní závislák</td></tr>
+    <tr><td>D</td><td>5+ - Krev je jen nosič kofeinu</td></tr>
+</table>
+
+<h2>2. Architektura aplikace</h2>
+
+<h3>Tech Stack</h3>
+<table>
+    <tr><th>Komponenta</th><th>Technologie</th></tr>
+    <tr><td>Frontend</td><td>Next.js 14, React 18, Tailwind CSS</td></tr>
+    <tr><td>Backend</td><td>Next.js API Routes</td></tr>
+    <tr><td>Databáze</td><td>MySQL 8.0</td></tr>
+    <tr><td>Kontejnerizace</td><td>Docker, Docker Compose</td></tr>
+    <tr><td>CI/CD</td><td>GitHub Actions</td></tr>
+    <tr><td>Reverzní proxy</td><td>Nginx</td></tr>
+    <tr><td>SSL</td><td>Let's Encrypt (Certbot)</td></tr>
+    <tr><td>Monitoring</td><td>UptimeRobot</td></tr>
+</table>
+
+<h3>Struktura projektu</h3>
+<pre><code>wa_anketa/
+├── .github/workflows/deploy.yml    # CI/CD pipeline
+├── app/
+│   ├── src/app/
+│   │   ├── page.tsx                # Hlavní stránka
+│   │   ├── about/                  # Stránka "O anketě"
+│   │   └── api/
+│   │       ├── vote/               # POST - odeslání hlasu
+│   │       ├── results/            # GET - výsledky
+│   │       ├── reset/              # POST - reset hlasování
+│   │       └── check-voted/        # GET - kontrola hlasování
+│   └── Dockerfile
+├── mysql/init.sql                  # Inicializace databáze
+└── docker-compose.yml</code></pre>
+
+<h2>3. Wireframe aplikace</h2>
+<div class="diagram">
+    <p class="diagram-placeholder">[Viz soubor wireframe.drawio]</p>
+</div>
+
+<p><strong>Popis sekcí:</strong></p>
+<ol>
+    <li><strong>Header</strong> - Název aplikace s ikonou kávy</li>
+    <li><strong>Hlasovací formulář</strong> - Otázka a 4 možnosti odpovědi (radio buttons)</li>
+    <li><strong>Tlačítka</strong> - "Hlasovat" a "Zobrazit výsledky"</li>
+    <li><strong>Výsledky</strong> - Progress bary s počtem hlasů a procenty</li>
+    <li><strong>Admin sekce</strong> - Skrytý formulář pro reset s tokenem</li>
+    <li><strong>Footer</strong> - Copyright a odkaz na stránku "O anketě"</li>
+</ol>
+
+<h2>4. Deployment diagram</h2>
+<div class="diagram">
+    <p class="diagram-placeholder">[Viz soubor deployment.drawio]</p>
+</div>
+
+<h3>Komponenty infrastruktury</h3>
+<p><strong>VPS Server (Ubuntu)</strong></p>
+<ul>
+    <li>Nginx jako reverzní proxy na portu 80/443</li>
+    <li>Docker kontejnery ve vnitřní síti <code>anketa_network</code></li>
+</ul>
+
+<p><strong>Docker kontejnery:</strong></p>
+<ul>
+    <li><code>anketa_app</code> - Next.js aplikace (port 3000)</li>
+    <li><code>anketa_db</code> - MySQL databáze (port 3306)</li>
+</ul>
+
+<p><strong>Externí služby:</strong></p>
+<ul>
+    <li>Cloudflare DNS - správa domény</li>
+    <li>UptimeRobot - monitoring dostupnosti</li>
+    <li>GitHub Actions - automatický deploy</li>
+</ul>
+
+<h2>5. Databázové schéma</h2>
+<pre><code>-- Tabulka možností odpovědí
+CREATE TABLE options (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    label CHAR(1) NOT NULL,
+    text VARCHAR(255) NOT NULL,
+    votes INT DEFAULT 0
+);
+
+-- Tabulka hlasujících (ochrana proti dvojímu hlasování)
+CREATE TABLE voters (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    voter_id VARCHAR(36) NOT NULL UNIQUE,
+    voted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+
+<h2>6. API Endpointy</h2>
+
+<h3>GET /api/results</h3>
+<p>Vrací aktuální výsledky hlasování.</p>
+<pre><code>{
+  "success": true,
+  "data": {
+    "question": "Kolik šálků kávy denně je ještě normální?",
+    "options": [
+      {"id": 1, "label": "A", "text": "...", "votes": 12},
+      {"id": 2, "label": "B", "text": "...", "votes": 35}
+    ],
+    "totalVotes": 47
+  }
+}</code></pre>
+
+<h3>POST /api/vote</h3>
+<p>Odešle hlas. Request: <code>{"optionId": 2}</code></p>
+<p>Odpovědi: 200 OK při úspěchu, 403 Forbidden pokud už hlasoval.</p>
+
+<h3>POST /api/reset</h3>
+<p>Resetuje hlasy. Vyžaduje token: <code>{"token": "..."}</code></p>
+
+<h3>GET /api/check-voted</h3>
+<p>Vrací <code>{"hasVoted": true/false}</code></p>
+
+<h2>7. Ochrana proti dvojímu hlasování</h2>
+
+<p>Systém používá kombinaci cookie a serverové validace.</p>
+
+<h3>Postup</h3>
+<ol>
+    <li><strong>První návštěva</strong> - Uživatel dostane unikátní UUID v cookie <code>voter_id</code></li>
+    <li><strong>Hlasování</strong> - Server zkontroluje UUID v tabulce <code>voters</code></li>
+    <li><strong>Nový uživatel</strong> - UUID se uloží, hlas se započítá</li>
+    <li><strong>Existující</strong> - Server vrátí chybu "Už jste hlasoval/a"</li>
+    <li><strong>Reset</strong> - Smaže <code>voters</code> i hlasy, všichni mohou hlasovat znovu</li>
+</ol>
+
+<div class="flow">
+Uživatel -> Cookie (voter_id: UUID)
+                |
+                v
+          POST /api/vote
+                |
+                v
+     SELECT FROM voters WHERE voter_id = ?
+                |
+     +----------+----------+
+     |                     |
+  Nenalezeno            Nalezeno
+     |                     |
+     v                     v
+  INSERT voter        403 Forbidden
+  UPDATE votes        "Už jste hlasoval/a"
+     |
+     v
+  200 OK</div>
+
+<h2>8. CI/CD Pipeline</h2>
+<div class="diagram">
+    <p class="diagram-placeholder">[Viz soubor ci-cd-workflow.drawio]</p>
+</div>
+
+<h3>Postup nasazení</h3>
+<ol>
+    <li>Vývojář upraví kód lokálně</li>
+    <li><code>git push origin master</code></li>
+    <li>GitHub Actions detekuje push</li>
+    <li>Workflow se připojí na VPS přes SSH</li>
+    <li>Stáhne kód (<code>git pull</code>)</li>
+    <li>Restartuje kontejnery (<code>docker compose up -d --build</code>)</li>
+    <li>Změny jsou live do 2 minut</li>
+</ol>
+
+<h3>GitHub Secrets</h3>
+<table>
+    <tr><th>Secret</th><th>Popis</th></tr>
+    <tr><td>VPS_HOST</td><td>IP adresa serveru</td></tr>
+    <tr><td>VPS_USER</td><td>SSH uživatel</td></tr>
+    <tr><td>VPS_SSH_KEY</td><td>Privátní SSH klíč</td></tr>
+    <tr><td>VPS_PATH</td><td>Cesta k repozitáři</td></tr>
+</table>
+
+<h2>9. Monitoring</h2>
+
+<p><strong>Služba:</strong> UptimeRobot (free tier)</p>
+
+<table>
+    <tr><th>Parametr</th><th>Hodnota</th></tr>
+    <tr><td>URL</td><td>https://anketa.riveer.cz/api/results</td></tr>
+    <tr><td>Typ</td><td>HTTP(s)</td></tr>
+    <tr><td>Interval</td><td>5 minut</td></tr>
+    <tr><td>Upozornění</td><td>Email</td></tr>
+</table>
+
+<h3>Reakce na výpadek</h3>
+<ol>
+    <li>Připojit na VPS: <code>ssh user@server</code></li>
+    <li>Zkontrolovat: <code>docker ps</code></li>
+    <li>Logy: <code>docker compose logs -f</code></li>
+    <li>Restart: <code>docker compose up -d --build</code></li>
+</ol>
+
+<h2>10. Produkční prostředí</h2>
+
+<table>
+    <tr><th>Položka</th><th>Hodnota</th></tr>
+    <tr><td>URL</td><td>https://anketa.riveer.cz</td></tr>
+    <tr><td>Server</td><td>VPS (Ubuntu)</td></tr>
+    <tr><td>DNS</td><td>Cloudflare</td></tr>
+    <tr><td>SSL</td><td>Let's Encrypt</td></tr>
+    <tr><td>Proxy</td><td>Nginx</td></tr>
+</table>
+
+<h2>11. Splněné požadavky</h2>
+
+<h3>Funkční požadavky</h3>
+<ul>
+    <li><span class="checkbox">✓</span> F1 - Hlasování, zobrazení otázky a možností</li>
+    <li><span class="checkbox">✓</span> F1 - Možnost zobrazit výsledky bez hlasování</li>
+    <li><span class="checkbox">✓</span> F2 - Výsledky sdílené, perzistentní</li>
+    <li><span class="checkbox">✓</span> F3 - Reset pouze s tokenem</li>
+</ul>
+
+<h3>Technické požadavky</h3>
+<ul>
+    <li><span class="checkbox">✓</span> HTTP/HTTPS komunikace</li>
+    <li><span class="checkbox">✓</span> HTML webová stránka</li>
+    <li><span class="checkbox">✓</span> Data v MySQL databázi</li>
+    <li><span class="checkbox">✓</span> Žádné ukládání pouze do localStorage</li>
+</ul>
+
+<h3>Rozšíření</h3>
+<ul>
+    <li><span class="checkbox">✓</span> Ochrana proti dvojímu hlasování</li>
+    <li><span class="checkbox">✓</span> CI/CD pipeline (GitHub Actions)</li>
+    <li><span class="checkbox">✓</span> HTTPS s certifikátem</li>
+    <li><span class="checkbox">✓</span> Monitoring (UptimeRobot)</li>
+    <li><span class="checkbox">✓</span> Stránka "O anketě" s nahlašováním chyb</li>
+</ul>
+
+<hr>
+<p style="text-align: center; color: #64748b; margin-top: 40px;">
+    Dokumentace vytvořena v rámci školního projektu, únor 2026
+</p>
+
+</body>
+</html>
