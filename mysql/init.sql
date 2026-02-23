@@ -8,6 +8,12 @@ CREATE TABLE IF NOT EXISTS options (
     votes INT DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS voters (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    voter_id VARCHAR(36) NOT NULL UNIQUE,
+    voted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 INSERT INTO options (label, text, votes) VALUES
     ('A', '0 - Káva je pro slabochy', 0),
     ('B', '1-2 - Rozumná dávka', 0),

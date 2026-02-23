@@ -9,15 +9,42 @@ interface OptionRow extends RowDataPacket {
   votes: number;
 }
 
+interface VoterRow extends RowDataPacket {
+  voter_id: string;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { optionId } = body;
 
+    // Get voter ID from cookie
+    const voterId = request.cookies.get('voter_id')?.value;
+
+    if (!voterId) {
+      return NextResponse.json(
+        { success: false, error: 'Chybi identifikace hlasujiciho' },
+        { status: 400 }
+      );
+    }
+
     if (!optionId || typeof optionId !== 'number') {
       return NextResponse.json(
-        { success: false, error: 'Neplatná volba' },
+        { success: false, error: 'Neplatna volba' },
         { status: 400 }
+      );
+    }
+
+    // Check if already voted
+    const [existingVoter] = await pool.query<VoterRow[]>(
+      'SELECT voter_id FROM voters WHERE voter_id = ?',
+      [voterId]
+    );
+
+    if (existingVoter.length > 0) {
+      return NextResponse.json(
+        { success: false, error: 'Uz jste hlasoval/a', alreadyVoted: true },
+        { status: 403 }
       );
     }
 
@@ -34,6 +61,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Record the voter
+    await pool.query<ResultSetHeader>(
+      'INSERT INTO voters (voter_id) VALUES (?)',
+      [voterId]
+    );
+
     // Increment vote count
     await pool.query<ResultSetHeader>(
       'UPDATE options SET votes = votes + 1 WHERE id = ?',
@@ -49,9 +82,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Hlas byl zaznamenán',
+      message: 'Hlas byl zaznamenan',
       data: {
-        question: 'Kolik šálků kávy denně je ještě normální?',
+        question: 'Kolik salku kavy denne je jeste normalni?',
         options: rows,
         totalVotes,
       },
@@ -59,7 +92,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Database error:', error);
     return NextResponse.json(
-      { success: false, error: 'Chyba databáze' },
+      { success: false, error: 'Chyba databaze' },
       { status: 500 }
     );
   }

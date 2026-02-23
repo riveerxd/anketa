@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
 
     if (!token || token !== validToken) {
       return NextResponse.json(
-        { success: false, error: 'Neplatný token' },
+        { success: false, error: 'Neplatny token' },
         { status: 403 }
       );
     }
@@ -19,14 +19,17 @@ export async function POST(request: NextRequest) {
     // Reset all votes to 0
     await pool.query<ResultSetHeader>('UPDATE options SET votes = 0');
 
+    // Clear voters table so everyone can vote again
+    await pool.query<ResultSetHeader>('DELETE FROM voters');
+
     return NextResponse.json({
       success: true,
-      message: 'Hlasování bylo resetováno',
+      message: 'Hlasovani bylo resetovano',
     });
   } catch (error) {
     console.error('Database error:', error);
     return NextResponse.json(
-      { success: false, error: 'Chyba databáze' },
+      { success: false, error: 'Chyba databaze' },
       { status: 500 }
     );
   }

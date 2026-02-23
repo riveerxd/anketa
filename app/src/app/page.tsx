@@ -10,7 +10,8 @@ import {
   AlertCircle,
   Lock,
   ChevronRight,
-  Info
+  Info,
+  CheckCircle2
 } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -28,6 +29,26 @@ interface ResultsData {
   totalVotes: number;
 }
 
+// Generate UUID
+function generateUUID(): string {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
+// Cookie helpers
+function getCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? match[2] : null;
+}
+
+function setCookie(name: string, value: string, days: number = 365) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=Lax`;
+}
+
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [results, setResults] = useState<ResultsData | null>(null);
@@ -36,8 +57,38 @@ export default function Home() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [showReset, setShowReset] = useState(false);
+  const [hasVoted, setHasVoted] = useState(false);
+  const [checkingVote, setCheckingVote] = useState(true);
 
   const question = 'Kolik salku kavy denne je jeste normalni?';
+
+  // Initialize voter ID cookie
+  useEffect(() => {
+    let voterId = getCookie('voter_id');
+    if (!voterId) {
+      voterId = generateUUID();
+      setCookie('voter_id', voterId);
+    }
+  }, []);
+
+  // Check if user already voted
+  useEffect(() => {
+    const checkVoted = async () => {
+      try {
+        const res = await fetch('/api/check-voted');
+        const data = await res.json();
+        setHasVoted(data.hasVoted);
+        if (data.hasVoted) {
+          setShowResults(true);
+        }
+      } catch (err) {
+        console.error('Failed to check vote status:', err);
+      } finally {
+        setCheckingVote(false);
+      }
+    };
+    checkVoted();
+  }, []);
 
   const fetchResults = async () => {
     try {
@@ -63,7 +114,7 @@ export default function Home() {
   }, [message]);
 
   const handleVote = async () => {
-    if (!selectedOption) return;
+    if (!selectedOption || hasVoted) return;
 
     setLoading(true);
     setMessage(null);
@@ -80,8 +131,13 @@ export default function Home() {
       if (data.success) {
         setResults(data.data);
         setShowResults(true);
-        setMessage({ type: 'success', text: 'Hlas byl zaznamenan' });
+        setHasVoted(true);
+        setMessage({ type: 'success', text: 'Hlas byl zaznamenan!' });
       } else {
+        if (data.alreadyVoted) {
+          setHasVoted(true);
+          setShowResults(true);
+        }
         setMessage({ type: 'error', text: data.error || 'Neco se pokazilo' });
       }
     } catch (err) {
@@ -115,10 +171,11 @@ export default function Home() {
       const data = await res.json();
 
       if (data.success) {
-        setMessage({ type: 'success', text: 'Hlasovani bylo resetovano' });
+        setMessage({ type: 'success', text: 'Hlasovani bylo resetovano!' });
         setResetToken('');
         setSelectedOption(null);
         setShowReset(false);
+        setHasVoted(false);
         fetchResults();
       } else {
         setMessage({ type: 'error', text: data.error || 'Reset selhal' });
@@ -129,6 +186,14 @@ export default function Home() {
       setLoading(false);
     }
   };
+
+  if (checkingVote) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-slate-500">Nacitani...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -164,6 +229,14 @@ export default function Home() {
           </div>
         )}
 
+        {/* Already Voted Notice */}
+        {hasVoted && (
+          <div className="mb-6 px-4 py-3 rounded-lg flex items-center gap-3 bg-blue-50 text-blue-800 border border-blue-200">
+            <CheckCircle2 className="w-5 h-5 text-blue-600" />
+            <span className="text-sm font-medium">Uz jste hlasoval/a. Dekujeme za vas hlas!</span>
+          </div>
+        )}
+
         {/* Voting Card */}
         <div className="bg-white rounded-xl border shadow-sm">
           <div className="p-6 border-b">
@@ -174,10 +247,13 @@ export default function Home() {
             {results?.options.map((option) => (
               <button
                 key={option.id}
-                onClick={() => setSelectedOption(option.id)}
+                onClick={() => !hasVoted && setSelectedOption(option.id)}
+                disabled={hasVoted}
                 className={cn(
                   "w-full text-left px-4 py-3 rounded-lg border-2 transition-all",
-                  "hover:border-slate-300 hover:bg-slate-50",
+                  hasVoted
+                    ? "cursor-not-allowed opacity-60"
+                    : "hover:border-slate-300 hover:bg-slate-50",
                   selectedOption === option.id
                     ? "border-slate-900 bg-slate-50"
                     : "border-slate-200 bg-white"
@@ -205,7 +281,7 @@ export default function Home() {
           <div className="p-6 pt-0 flex gap-3">
             <button
               onClick={handleVote}
-              disabled={!selectedOption || loading}
+              disabled={!selectedOption || loading || hasVoted}
               className={cn(
                 "flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium transition-colors",
                 "bg-slate-900 text-white hover:bg-slate-800",
@@ -213,7 +289,7 @@ export default function Home() {
               )}
             >
               <Vote className="w-4 h-4" />
-              {loading ? 'Odesilam...' : 'Hlasovat'}
+              {hasVoted ? 'Uz jste hlasoval/a' : loading ? 'Odesilam...' : 'Hlasovat'}
             </button>
             <button
               onClick={handleShowResults}
