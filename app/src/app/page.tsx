@@ -9,8 +9,10 @@ import {
   Check,
   AlertCircle,
   Lock,
-  ChevronRight
+  ChevronRight,
+  Info
 } from 'lucide-react';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 interface Option {
@@ -304,8 +306,13 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t bg-white mt-auto">
-        <div className="max-w-2xl mx-auto px-4 py-4 text-center text-sm text-slate-500">
-          2026 Kavova Anketa
+        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-center gap-4 text-sm text-slate-500">
+          <span>2026 Kavova Anketa</span>
+          <span className="text-slate-300">|</span>
+          <Link href="/about" className="inline-flex items-center gap-1 hover:text-slate-700 transition-colors">
+            <Info className="w-3.5 h-3.5" />
+            O ankete
+          </Link>
         </div>
       </footer>
     </div>
