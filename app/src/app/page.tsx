@@ -5,11 +5,8 @@ import {
   Coffee,
   Vote,
   BarChart3,
-  RotateCcw,
   Check,
   AlertCircle,
-  Lock,
-  ChevronRight,
   Info,
   CheckCircle2
 } from 'lucide-react';
@@ -53,10 +50,8 @@ export default function Home() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [results, setResults] = useState<ResultsData | null>(null);
   const [showResults, setShowResults] = useState(false);
-  const [resetToken, setResetToken] = useState('');
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [loading, setLoading] = useState(false);
-  const [showReset, setShowReset] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
   const [checkingVote, setCheckingVote] = useState(true);
 
@@ -150,41 +145,6 @@ export default function Home() {
   const handleShowResults = () => {
     fetchResults();
     setShowResults(true);
-  };
-
-  const handleReset = async () => {
-    if (!resetToken.trim()) {
-      setMessage({ type: 'error', text: 'Zadejte token' });
-      return;
-    }
-
-    setLoading(true);
-    setMessage(null);
-
-    try {
-      const res = await fetch('/api/reset', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: resetToken }),
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
-        setMessage({ type: 'success', text: 'Hlasování bylo resetováno!' });
-        setResetToken('');
-        setSelectedOption(null);
-        setShowReset(false);
-        setHasVoted(false);
-        fetchResults();
-      } else {
-        setMessage({ type: 'error', text: data.error || 'Reset selhal' });
-      }
-    } catch (err) {
-      setMessage({ type: 'error', text: 'Chyba připojení k serveru' });
-    } finally {
-      setLoading(false);
-    }
   };
 
   if (checkingVote) {
@@ -342,42 +302,6 @@ export default function Home() {
           </div>
         )}
 
-        {/* Admin Reset */}
-        <div className="mt-6">
-          <button
-            onClick={() => setShowReset(!showReset)}
-            className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 transition-colors"
-          >
-            <Lock className="w-4 h-4" />
-            <span>Admin</span>
-            <ChevronRight className={cn(
-              "w-4 h-4 transition-transform",
-              showReset && "rotate-90"
-            )} />
-          </button>
-
-          {showReset && (
-            <div className="mt-3 p-4 bg-white rounded-xl border shadow-sm animate-in fade-in slide-in-from-top-1">
-              <div className="flex gap-3">
-                <input
-                  type="password"
-                  placeholder="Reset token..."
-                  value={resetToken}
-                  onChange={(e) => setResetToken(e.target.value)}
-                  className="flex-1 px-3 py-2 text-sm rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent"
-                />
-                <button
-                  onClick={handleReset}
-                  disabled={loading}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition-colors disabled:opacity-50"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  Reset
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
       </main>
 
       {/* Footer */}
