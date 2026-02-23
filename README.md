@@ -1,321 +1,263 @@
-# WA Anketa - Hlasovací Aplikace
+# Kávová Anketa
 
-Jednoduchá webová anketa o jedné otázce s možností hlasování, zobrazení výsledků a administrátorského resetu.
+**Technická dokumentace**
 
-## Otázka ankety
+**URL:** [https://anketa.riveer.cz](https://anketa.riveer.cz)
+**Datum:** Únor 2026
 
-**"Kolik šálků kávy denně je ještě normální?"**
+---
 
-| Možnost | Text odpovědi |
-|---------|---------------|
+## 1. Přehled projektu
+
+Jednoduchá webová anketa s jednou otázkou, možností hlasování, zobrazení výsledků a administrátorským resetem. Každý uživatel může hlasovat pouze jednou.
+
+**Otázka ankety:** "Kolik šálků kávy denně je ještě normální?"
+
+| Možnost | Odpověď |
+|---------|---------|
 | A | 0 - Káva je pro slabochy |
 | B | 1-2 - Rozumná dávka |
 | C | 3-4 - Produktivní závislák |
 | D | 5+ - Krev je jen nosič kofeinu |
 
----
+## 2. Architektura aplikace
 
-## Wireframe
+### Tech Stack
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         HEADER                                  │
-│                   ☕ Kávová Anketa ☕                            │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                 │
-│    ┌─────────────────────────────────────────────────────┐     │
-│    │                                                     │     │
-│    │    Kolik šálků kávy denně je ještě normální?       │     │
-│    │                                                     │     │
-│    │    ○ A) 0 - Káva je pro slabochy                   │     │
-│    │    ○ B) 1-2 - Rozumná dávka                        │     │
-│    │    ○ C) 3-4 - Produktivní závislák                 │     │
-│    │    ○ D) 5+ - Krev je jen nosič kofeinu             │     │
-│    │                                                     │     │
-│    │    ┌──────────────┐  ┌────────────────────┐        │     │
-│    │    │  HLASOVAT    │  │  ZOBRAZIT VÝSLEDKY │        │     │
-│    │    └──────────────┘  └────────────────────┘        │     │
-│    │                                                     │     │
-│    └─────────────────────────────────────────────────────┘     │
-│                                                                 │
-│    ┌─────────────────────────────────────────────────────┐     │
-│    │              VÝSLEDKY (po hlasování)                │     │
-│    │                                                     │     │
-│    │    A) 0 - Káva je pro slabochy                     │     │
-│    │    ████░░░░░░░░░░░░░░░░  12 hlasů (15%)            │     │
-│    │                                                     │     │
-│    │    B) 1-2 - Rozumná dávka                          │     │
-│    │    ████████████░░░░░░░░  35 hlasů (44%)            │     │
-│    │                                                     │     │
-│    │    C) 3-4 - Produktivní závislák                   │     │
-│    │    ██████████░░░░░░░░░░  28 hlasů (35%)            │     │
-│    │                                                     │     │
-│    │    D) 5+ - Krev je jen nosič kofeinu               │     │
-│    │    ██░░░░░░░░░░░░░░░░░░   5 hlasů (6%)             │     │
-│    │                                                     │     │
-│    │    Celkem: 80 hlasů                                │     │
-│    │                                                     │     │
-│    └─────────────────────────────────────────────────────┘     │
-│                                                                 │
-│    ┌─────────────────────────────────────────────────────┐     │
-│    │              ADMIN RESET                            │     │
-│    │                                                     │     │
-│    │    Token: [________________]  [ RESETOVAT ]         │     │
-│    │                                                     │     │
-│    └─────────────────────────────────────────────────────┘     │
-│                                                                 │
-├─────────────────────────────────────────────────────────────────┤
-│                         FOOTER                                  │
-│                    © 2026 WA Anketa                             │
-└─────────────────────────────────────────────────────────────────┘
-```
+| Komponenta | Technologie |
+|------------|-------------|
+| Frontend | Next.js 14, React 18, Tailwind CSS |
+| Backend | Next.js API Routes |
+| Databáze | MySQL 8.0 |
+| Kontejnerizace | Docker, Docker Compose |
+| CI/CD | GitHub Actions |
+| Reverzní proxy | Nginx |
+| SSL | Let's Encrypt (Certbot) |
+| Monitoring | UptimeRobot |
 
----
-
-## Deployment Diagram
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                           HOST MACHINE                               │
-│                                                                      │
-│    ┌──────────────────────────────────────────────────────────┐     │
-│    │                    DOCKER NETWORK                         │     │
-│    │                    (anketa_network)                       │     │
-│    │                                                           │     │
-│    │   ┌─────────────────────┐    ┌─────────────────────┐    │     │
-│    │   │                     │    │                     │    │     │
-│    │   │   NEXT.JS APP       │    │   MYSQL 8.0         │    │     │
-│    │   │   (anketa_app)      │    │   (anketa_db)       │    │     │
-│    │   │                     │    │                     │    │     │
-│    │   │   Port: 3000        │───▶│   Port: 3306        │    │     │
-│    │   │                     │    │                     │    │     │
-│    │   │   /app              │    │   /var/lib/mysql    │    │     │
-│    │   │                     │    │         │           │    │     │
-│    │   └─────────────────────┘    └─────────│───────────┘    │     │
-│    │             │                          │                 │     │
-│    └─────────────│──────────────────────────│─────────────────┘     │
-│                  │                          │                        │
-│                  ▼                          ▼                        │
-│         ┌────────────────┐         ┌────────────────┐               │
-│         │ localhost:3000 │         │ mysql_data     │               │
-│         │ (exposed port) │         │ (volume)       │               │
-│         └────────────────┘         └────────────────┘               │
-│                  │                                                   │
-└──────────────────│───────────────────────────────────────────────────┘
-                   │
-                   ▼
-          ┌────────────────┐
-          │   USER         │
-          │   BROWSER      │
-          │                │
-          │   HTTP/HTTPS   │
-          └────────────────┘
-```
-
----
-
-## Struktura projektu
+### Struktura projektu
 
 ```
 wa_anketa/
-├── docker-compose.yml          # Docker orchestrace
-├── .env                        # Environment proměnné (gitignore!)
-├── .env.example                # Vzor env souboru
-├── .gitignore
-├── README.md                   # Tato dokumentace
-│
-├── docs/
-│   ├── wireframe.drawio        # Editovatelný wireframe
-│   └── deployment.drawio       # Editovatelný deployment diagram
-│
-├── app/                        # Next.js aplikace
-│   ├── Dockerfile
-│   ├── package.json
-│   ├── next.config.js
-│   ├── tsconfig.json
-│   │
+├── .github/workflows/deploy.yml    # CI/CD pipeline
+├── app/
 │   ├── src/
 │   │   ├── app/
-│   │   │   ├── layout.tsx      # Root layout
-│   │   │   ├── page.tsx        # Hlavní stránka
-│   │   │   ├── globals.css     # Globální styly
-│   │   │   │
+│   │   │   ├── layout.tsx          # Root layout
+│   │   │   ├── page.tsx            # Hlavní stránka
+│   │   │   ├── about/page.tsx      # Stránka "O anketě"
+│   │   │   ├── admin/page.tsx      # Admin reset (skrytá)
 │   │   │   └── api/
-│   │   │       ├── vote/
-│   │   │       │   └── route.ts    # POST /api/vote
-│   │   │       ├── results/
-│   │   │       │   └── route.ts    # GET /api/results
-│   │   │       └── reset/
-│   │   │           └── route.ts    # POST /api/reset
-│   │   │
-│   │   ├── components/
-│   │   │   ├── VoteForm.tsx        # Formulář hlasování
-│   │   │   ├── Results.tsx         # Zobrazení výsledků
-│   │   │   └── ResetForm.tsx       # Admin reset
-│   │   │
+│   │   │       ├── vote/route.ts       # POST - odeslání hlasu
+│   │   │       ├── results/route.ts    # GET - výsledky
+│   │   │       ├── reset/route.ts      # POST - reset hlasování
+│   │   │       └── check-voted/route.ts # GET - kontrola hlasování
 │   │   └── lib/
-│   │       └── db.ts               # MySQL connection pool
-│   │
-│   └── logs/                   # Aplikační logy (gitignore)
-│
-└── mysql/
-    └── init.sql                # Inicializační SQL skript
+│   │       ├── db.ts               # MySQL connection pool
+│   │       └── utils.ts            # Utility funkce (cn)
+│   └── Dockerfile
+├── mysql/init.sql                  # Inicializace databáze
+└── docker-compose.yml
 ```
 
----
+## 3. Wireframe aplikace
 
-## API Endpointy
+*[Viz soubor wireframe.drawio]*
 
-### `GET /`
-**Popis:** Hlavní stránka aplikace
-**Response:** HTML stránka s formulářem
+**Popis sekcí:**
 
----
+1. **Header** - Název aplikace s ikonou kávy
+2. **Hlasovací formulář** - Otázka a 4 možnosti odpovědi (radio buttons)
+3. **Tlačítka** - "Hlasovat" a "Zobrazit výsledky"
+4. **Výsledky** - Progress bary s počtem hlasů a procenty
+5. **Admin sekce** - Skrytý formulář pro reset s tokenem
+6. **Footer** - Copyright a odkaz na stránku "O anketě"
 
-### `GET /api/results`
-**Popis:** Získání aktuálních výsledků hlasování
-**Response:**
+## 4. Deployment diagram
+
+*[Viz soubor deployment.drawio]*
+
+### Komponenty infrastruktury
+
+**VPS Server (Ubuntu)**
+
+- Nginx jako reverzní proxy na portu 80/443
+- Docker kontejnery ve vnitřní síti `anketa_network`
+
+**Docker kontejnery:**
+
+- `anketa_app` - Next.js aplikace (port 3000)
+- `anketa_db` - MySQL databáze (port 3306)
+
+**Externí služby:**
+
+- Cloudflare DNS - správa domény
+- UptimeRobot - monitoring dostupnosti
+- GitHub Actions - automatický deploy
+
+## 5. Databázové schéma
+
+```sql
+-- Tabulka možností odpovědí
+CREATE TABLE options (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    label CHAR(1) NOT NULL,
+    text VARCHAR(255) NOT NULL,
+    votes INT DEFAULT 0
+);
+
+-- Tabulka hlasujících (ochrana proti dvojímu hlasování)
+CREATE TABLE voters (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    voter_id VARCHAR(36) NOT NULL UNIQUE,
+    voted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+## 6. API Endpointy
+
+### GET /api/results
+
+Vrací aktuální výsledky hlasování.
+
 ```json
 {
   "success": true,
   "data": {
     "question": "Kolik šálků kávy denně je ještě normální?",
     "options": [
-      { "id": 1, "label": "A", "text": "0 - Káva je pro slabochy", "votes": 12 },
-      { "id": 2, "label": "B", "text": "1-2 - Rozumná dávka", "votes": 35 },
-      { "id": 3, "label": "C", "text": "3-4 - Produktivní závislák", "votes": 28 },
-      { "id": 4, "label": "D", "text": "5+ - Krev je jen nosič kofeinu", "votes": 5 }
+      {"id": 1, "label": "A", "text": "...", "votes": 12},
+      {"id": 2, "label": "B", "text": "...", "votes": 35}
     ],
-    "totalVotes": 80
+    "totalVotes": 47
   }
 }
 ```
 
+### POST /api/vote
+
+Odešle hlas. Request: `{"optionId": 2}`
+
+Odpovědi: 200 OK při úspěchu, 403 Forbidden pokud už hlasoval.
+
+### POST /api/reset
+
+Resetuje hlasy. Vyžaduje token: `{"token": "..."}`
+
+### GET /api/check-voted
+
+Vrací `{"hasVoted": true/false}`
+
+## 7. Ochrana proti dvojímu hlasování
+
+Systém používá kombinaci cookie a serverové validace.
+
+### Postup
+
+1. **První návštěva** - Uživatel dostane unikátní UUID v cookie `voter_id`
+2. **Hlasování** - Server zkontroluje UUID v tabulce `voters`
+3. **Nový uživatel** - UUID se uloží, hlas se započítá
+4. **Existující** - Server vrátí chybu "Už jste hlasoval/a"
+5. **Reset** - Smaže `voters` i hlasy, všichni mohou hlasovat znovu
+
+```
+Uživatel -> Cookie (voter_id: UUID)
+                |
+                v
+          POST /api/vote
+                |
+                v
+     SELECT FROM voters WHERE voter_id = ?
+                |
+     +----------+----------+
+     |                     |
+  Nenalezeno            Nalezeno
+     |                     |
+     v                     v
+  INSERT voter        403 Forbidden
+  UPDATE votes        "Už jste hlasoval/a"
+     |
+     v
+  200 OK
+```
+
+## 8. CI/CD Pipeline
+
+*[Viz soubor ci-cd-workflow.drawio]*
+
+### Postup nasazení
+
+1. Vývojář upraví kód lokálně
+2. `git push origin master`
+3. GitHub Actions detekuje push
+4. Workflow se připojí na VPS přes SSH
+5. Stáhne kód (`git pull`)
+6. Restartuje kontejnery (`docker compose up -d --build`)
+7. Změny jsou live do 2 minut
+
+### GitHub Secrets
+
+| Secret | Popis |
+|--------|-------|
+| VPS_HOST | IP adresa serveru |
+| VPS_USER | SSH uživatel |
+| VPS_SSH_KEY | Privátní SSH klíč |
+| VPS_PATH | Cesta k repozitáři |
+
+## 9. Monitoring
+
+**Služba:** UptimeRobot (free tier)
+
+**Veřejná status stránka:** [https://stats.uptimerobot.com/1Bty2QQ4I9](https://stats.uptimerobot.com/1Bty2QQ4I9)
+
+**Dashboard:** [https://dashboard.uptimerobot.com](https://dashboard.uptimerobot.com)
+
+| Parametr | Hodnota |
+|----------|---------|
+| Monitorovaná URL | https://anketa.riveer.cz/api/results |
+| Typ | HTTP(s) |
+| Interval | 5 minut |
+| Upozornění | Email |
+
+### Přístup k monitoringu
+
+1. Přihlaste se na [uptimerobot.com](https://uptimerobot.com)
+2. V dashboardu uvidíte stav monitoru "Kávová Anketa"
+3. Historie dostupnosti a response time jsou v detailu monitoru
+
+### Reakce na výpadek
+
+1. Připojit na VPS: `ssh user@server`
+2. Zkontrolovat: `docker ps`
+3. Logy: `docker compose logs -f`
+4. Restart: `docker compose up -d --build`
+
+## 10. Produkční prostředí
+
+| Položka | Hodnota |
+|---------|---------|
+| URL | https://anketa.riveer.cz |
+| Server | VPS (Ubuntu) |
+| DNS | Cloudflare |
+| SSL | Let's Encrypt |
+| Proxy | Nginx |
+
+## 11. Nahlašování chyb
+
+Uživatelé mohou nahlásit chyby přes GitHub Issues na stránce **O anketě** (`/about`).
+
+| Položka | Hodnota |
+|---------|---------|
+| GitHub repozitář | [https://github.com/riveerxd/anketa](https://github.com/riveerxd/anketa) |
+| Nový issue | [https://github.com/riveerxd/anketa/issues/new](https://github.com/riveerxd/anketa/issues/new) |
+
+**Při nahlašování uvádějte:**
+
+- Popis problému
+- Kroky k reprodukci chyby
+- Prohlížeč a zařízení
+- Screenshot (pokud je to možné)
+
 ---
 
-### `POST /api/vote`
-**Popis:** Odeslání hlasu
-**Request Body:**
-```json
-{
-  "optionId": 2
-}
-```
-**Response (success):**
-```json
-{
-  "success": true,
-  "message": "Hlas byl zaznamenán",
-  "data": { /* stejné jako GET /api/results */ }
-}
-```
-**Response (error):**
-```json
-{
-  "success": false,
-  "error": "Neplatná volba"
-}
-```
-
----
-
-### `POST /api/reset`
-**Popis:** Reset všech hlasů (vyžaduje token)
-**Request Body:**
-```json
-{
-  "token": "tajny-admin-token-123"
-}
-```
-**Response (success):**
-```json
-{
-  "success": true,
-  "message": "Hlasování bylo resetováno"
-}
-```
-**Response (error - špatný token):**
-```json
-{
-  "success": false,
-  "error": "Neplatný token"
-}
-```
-
----
-
-## Databázové schéma
-
-```sql
--- Tabulka možností odpovědí
-CREATE TABLE options (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    label CHAR(1) NOT NULL,           -- A, B, C, D
-    text VARCHAR(255) NOT NULL,        -- Text odpovědi
-    votes INT DEFAULT 0                -- Počet hlasů
-);
-
--- Počáteční data
-INSERT INTO options (label, text, votes) VALUES
-    ('A', '0 - Káva je pro slabochy', 0),
-    ('B', '1-2 - Rozumná dávka', 0),
-    ('C', '3-4 - Produktivní závislák', 0),
-    ('D', '5+ - Krev je jen nosič kofeinu', 0);
-```
-
----
-
-## Environment proměnné
-
-| Proměnná | Popis | Příklad |
-|----------|-------|---------|
-| `MYSQL_HOST` | Hostname MySQL serveru | `anketa_db` |
-| `MYSQL_PORT` | Port MySQL | `3306` |
-| `MYSQL_DATABASE` | Název databáze | `anketa` |
-| `MYSQL_USER` | Uživatel databáze | `anketa_user` |
-| `MYSQL_PASSWORD` | Heslo databáze | `secret123` |
-| `MYSQL_ROOT_PASSWORD` | Root heslo MySQL | `rootsecret` |
-| `RESET_TOKEN` | Token pro reset hlasování | `tajny-admin-token-123` |
-
----
-
-## Spuštění aplikace
-
-```bash
-# 1. Zkopíruj a uprav env soubor
-cp .env.example .env
-
-# 2. Spusť kontejnery
-docker-compose up -d
-
-# 3. Aplikace běží na
-open http://localhost:3000
-```
-
----
-
-## Funkční požadavky - checklist
-
-- [x] **F1** Hlasování
-  - [x] Zobrazení otázky a 4 možností
-  - [x] Výběr jedné možnosti
-  - [x] Uložení hlasu na server
-  - [x] Možnost zobrazit výsledky bez hlasování
-
-- [x] **F2** Zobrazení výsledků
-  - [x] Aktuální výsledky bez hlasování
-  - [x] Počet hlasů pro každou možnost
-  - [x] Sdílená data mezi uživateli (MySQL)
-  - [x] Perzistence po restartu (Docker volume)
-
-- [x] **F3** Reset hlasování
-  - [x] Reset možný pouze s tokenem
-  - [x] Token uložen na serveru (env proměnná)
-  - [x] Správný token = vynulování hlasů
-  - [x] Špatný token = zamítnutí
-
----
-
-## Autor
-
-WA Anketa - Školní projekt 2026
+*Dokumentace vytvořena v rámci školního projektu, únor 2026*

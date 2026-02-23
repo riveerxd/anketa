@@ -141,7 +141,7 @@
 <h1>Kávová Anketa</h1>
 <p class="meta">
     Technická dokumentace<br>
-    <strong>URL:</strong> https://anketa.riveer.cz<br>
+    <strong>URL:</strong> <a href="https://anketa.riveer.cz">https://anketa.riveer.cz</a><br>
     <strong>Datum:</strong> Únor 2026
 </p>
 
@@ -179,14 +179,20 @@
 <pre><code>wa_anketa/
 ├── .github/workflows/deploy.yml    # CI/CD pipeline
 ├── app/
-│   ├── src/app/
-│   │   ├── page.tsx                # Hlavní stránka
-│   │   ├── about/                  # Stránka "O anketě"
-│   │   └── api/
-│   │       ├── vote/               # POST - odeslání hlasu
-│   │       ├── results/            # GET - výsledky
-│   │       ├── reset/              # POST - reset hlasování
-│   │       └── check-voted/        # GET - kontrola hlasování
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── layout.tsx          # Root layout
+│   │   │   ├── page.tsx            # Hlavní stránka
+│   │   │   ├── about/page.tsx      # Stránka "O anketě"
+│   │   │   ├── admin/page.tsx      # Admin reset (skrytá)
+│   │   │   └── api/
+│   │   │       ├── vote/route.ts       # POST - odeslání hlasu
+│   │   │       ├── results/route.ts    # GET - výsledky
+│   │   │       ├── reset/route.ts      # POST - reset hlasování
+│   │   │       └── check-voted/route.ts # GET - kontrola hlasování
+│   │   └── lib/
+│   │       ├── db.ts               # MySQL connection pool
+│   │       └── utils.ts            # Utility funkce (cn)
 │   └── Dockerfile
 ├── mysql/init.sql                  # Inicializace databáze
 └── docker-compose.yml</code></pre>
@@ -371,31 +377,22 @@ Uživatel -> Cookie (voter_id: UUID)
     <tr><td>Proxy</td><td>Nginx</td></tr>
 </table>
 
-<h2>11. Splněné požadavky</h2>
+<h2>11. Nahlašování chyb</h2>
 
-<h3>Funkční požadavky</h3>
-<ul>
-    <li><span class="checkbox">✓</span> F1 - Hlasování, zobrazení otázky a možností</li>
-    <li><span class="checkbox">✓</span> F1 - Možnost zobrazit výsledky bez hlasování</li>
-    <li><span class="checkbox">✓</span> F2 - Výsledky sdílené, perzistentní</li>
-    <li><span class="checkbox">✓</span> F3 - Reset pouze s tokenem</li>
-</ul>
+<p>Uživatelé mohou nahlásit chyby přes GitHub Issues na stránce <strong>O anketě</strong> (<code>/about</code>).</p>
 
-<h3>Technické požadavky</h3>
-<ul>
-    <li><span class="checkbox">✓</span> HTTP/HTTPS komunikace</li>
-    <li><span class="checkbox">✓</span> HTML webová stránka</li>
-    <li><span class="checkbox">✓</span> Data v MySQL databázi</li>
-    <li><span class="checkbox">✓</span> Žádné ukládání pouze do localStorage</li>
-</ul>
+<table>
+    <tr><th>Položka</th><th>Hodnota</th></tr>
+    <tr><td>GitHub repozitář</td><td><a href="https://github.com/riveerxd/anketa">https://github.com/riveerxd/anketa</a></td></tr>
+    <tr><td>Nový issue</td><td><a href="https://github.com/riveerxd/anketa/issues/new">https://github.com/riveerxd/anketa/issues/new</a></td></tr>
+</table>
 
-<h3>Rozšíření</h3>
+<p><strong>Při nahlašování uvádějte:</strong></p>
 <ul>
-    <li><span class="checkbox">✓</span> Ochrana proti dvojímu hlasování</li>
-    <li><span class="checkbox">✓</span> CI/CD pipeline (GitHub Actions)</li>
-    <li><span class="checkbox">✓</span> HTTPS s certifikátem</li>
-    <li><span class="checkbox">✓</span> Monitoring (UptimeRobot)</li>
-    <li><span class="checkbox">✓</span> Stránka "O anketě" s nahlašováním chyb</li>
+    <li>Popis problému</li>
+    <li>Kroky k reprodukci chyby</li>
+    <li>Prohlížeč a zařízení</li>
+    <li>Screenshot (pokud je to možné)</li>
 </ul>
 
 <hr>
