@@ -1,0 +1,132 @@
+<mxfile host="app.diagrams.net" modified="2026-02-23T10:00:00.000Z" agent="Mozilla/5.0" version="21.0.0">
+  <diagram name="Wireframe" id="wireframe-1">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Main Container -->
+        <mxCell id="main-container" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#666666;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="100" y="40" width="500" height="700" as="geometry" />
+        </mxCell>
+
+        <!-- Header -->
+        <mxCell id="header" value="&lt;b&gt;Kavova Anketa&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1e293b;fontColor=#ffffff;fontSize=18;" vertex="1" parent="1">
+          <mxGeometry x="100" y="40" width="500" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Question Box -->
+        <mxCell id="question-box" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#e2e8f0;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="120" y="110" width="460" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- Question Text -->
+        <mxCell id="question-text" value="&lt;b&gt;Kolik salku kavy denne je jeste normalni?&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="140" y="120" width="420" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Options -->
+        <mxCell id="option-a" value="○  A) 0 - Kava je pro slabochy" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=12;fontColor=#334155;" vertex="1" parent="1">
+          <mxGeometry x="160" y="160" width="380" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="option-b" value="○  B) 1-2 - Rozumna davka" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=12;fontColor=#334155;" vertex="1" parent="1">
+          <mxGeometry x="160" y="185" width="380" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="option-c" value="○  C) 3-4 - Produktivni zavislak" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=12;fontColor=#334155;" vertex="1" parent="1">
+          <mxGeometry x="160" y="210" width="380" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="option-d" value="○  D) 5+ - Krev je jen nosic kofeinu" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=12;fontColor=#334155;" vertex="1" parent="1">
+          <mxGeometry x="160" y="235" width="380" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- Vote Button -->
+        <mxCell id="vote-btn" value="HLASOVAT" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1e293b;fontColor=#ffffff;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="270" width="120" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Results Button -->
+        <mxCell id="results-btn" value="VYSLEDKY" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f5f9;fontColor=#334155;fontSize=12;fontStyle=1;strokeColor=#e2e8f0;" vertex="1" parent="1">
+          <mxGeometry x="300" y="270" width="160" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Results Box -->
+        <mxCell id="results-box" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#e2e8f0;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="120" y="330" width="460" height="220" as="geometry" />
+        </mxCell>
+
+        <!-- Results Title -->
+        <mxCell id="results-title" value="&lt;b&gt;VYSLEDKY&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=14;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="280" y="340" width="140" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- Result Bars -->
+        <mxCell id="result-a-label" value="A) 0 - Kava je pro slabochy" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#334155;" vertex="1" parent="1">
+          <mxGeometry x="140" y="375" width="200" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="result-a-bar" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="140" y="395" width="60" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="result-a-count" value="12 (15%)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontColor=#64748b;" vertex="1" parent="1">
+          <mxGeometry x="210" y="393" width="60" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="result-b-label" value="B) 1-2 - Rozumna davka" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#334155;" vertex="1" parent="1">
+          <mxGeometry x="140" y="420" width="200" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="result-b-bar" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="140" y="440" width="180" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="result-b-count" value="35 (44%)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontColor=#64748b;" vertex="1" parent="1">
+          <mxGeometry x="330" y="438" width="60" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="result-c-label" value="C) 3-4 - Produktivni zavislak" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#334155;" vertex="1" parent="1">
+          <mxGeometry x="140" y="465" width="200" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="result-c-bar" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="140" y="485" width="140" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="result-c-count" value="28 (35%)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontColor=#64748b;" vertex="1" parent="1">
+          <mxGeometry x="290" y="483" width="60" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="result-d-label" value="D) 5+ - Krev je jen nosic kofeinu" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#334155;" vertex="1" parent="1">
+          <mxGeometry x="140" y="510" width="220" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="result-d-bar" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="140" y="530" width="25" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="result-d-count" value="5 (6%)" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontColor=#64748b;" vertex="1" parent="1">
+          <mxGeometry x="175" y="528" width="50" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Reset Box -->
+        <mxCell id="reset-box" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#e2e8f0;fillColor=#f8fafc;" vertex="1" parent="1">
+          <mxGeometry x="120" y="570" width="460" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Reset Title -->
+        <mxCell id="reset-title" value="&lt;b&gt;ADMIN RESET&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=12;fontColor=#64748b;" vertex="1" parent="1">
+          <mxGeometry x="280" y="580" width="140" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Token Input -->
+        <mxCell id="token-label" value="Token:" style="text;html=1;strokeColor=none;fillColor=none;align=right;fontSize=11;fontColor=#64748b;" vertex="1" parent="1">
+          <mxGeometry x="140" y="610" width="50" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="token-input" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#e2e8f0;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="200" y="610" width="200" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="reset-btn" value="RESET" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef2f2;fontColor=#b91c1c;fontSize=11;fontStyle=1;strokeColor=#fecaca;" vertex="1" parent="1">
+          <mxGeometry x="420" y="610" width="100" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- Footer -->
+        <mxCell id="footer" value="2026 Kavova Anketa" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8fafc;fontColor=#64748b;fontSize=11;strokeColor=#e2e8f0;" vertex="1" parent="1">
+          <mxGeometry x="100" y="690" width="500" height="50" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

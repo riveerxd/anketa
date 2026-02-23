@@ -1,0 +1,45 @@
+services:
+  app:
+    container_name: anketa_app
+    build: ./app
+    ports:
+      - "3000:3000"
+    environment:
+      - MYSQL_HOST=anketa_db
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - RESET_TOKEN=${RESET_TOKEN}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - anketa_network
+
+  db:
+    container_name: anketa_db
+    image: mysql:8.0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - anketa_network
+
+networks:
+  anketa_network:
+    driver: bridge
+
+volumes:
+  mysql_data:

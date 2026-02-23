@@ -1,0 +1,156 @@
+<mxfile host="app.diagrams.net" modified="2026-02-23T10:00:00.000Z" agent="Mozilla/5.0" version="21.0.0">
+  <diagram name="Deployment Diagram" id="deployment-1">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="&lt;b&gt;Deployment Diagram - WA Anketa&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=18;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="350" y="20" width="300" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- User/Browser -->
+        <mxCell id="user-icon" value="" style="shape=actor;whiteSpace=wrap;html=1;fillColor=#e2e8f0;strokeColor=#64748b;" vertex="1" parent="1">
+          <mxGeometry x="120" y="100" width="40" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="user-label" value="&lt;b&gt;User&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=12;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="100" y="165" width="80" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Browser Box -->
+        <mxCell id="browser-box" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#94a3b8;fillColor=#f1f5f9;" vertex="1" parent="1">
+          <mxGeometry x="80" y="200" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="browser-label" value="&lt;b&gt;Web Browser&lt;/b&gt;&lt;br&gt;Chrome/Firefox/Safari" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=11;fontColor=#334155;" vertex="1" parent="1">
+          <mxGeometry x="85" y="220" width="110" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow Browser to Host -->
+        <mxCell id="arrow-browser-host" value="HTTP/HTTPS&lt;br&gt;Port 3000" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.25;strokeWidth=2;strokeColor=#0ea5e9;fontColor=#0ea5e9;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="200" y="240" as="sourcePoint" />
+            <mxPoint x="300" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Host Machine -->
+        <mxCell id="host-machine" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#94a3b8;fillColor=#f8fafc;dashed=1;dashPattern=5 5;" vertex="1" parent="1">
+          <mxGeometry x="300" y="80" width="600" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="host-label" value="&lt;b&gt;HOST MACHINE&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=12;fontColor=#475569;" vertex="1" parent="1">
+          <mxGeometry x="310" y="85" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Docker Network -->
+        <mxCell id="docker-network" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#0ea5e9;fillColor=#f0f9ff;" vertex="1" parent="1">
+          <mxGeometry x="320" y="120" width="560" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="network-label" value="&lt;b&gt;Docker Network: anketa_network&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=11;fontColor=#0369a1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="125" width="220" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Next.js Container -->
+        <mxCell id="nextjs-container" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#16a34a;fillColor=#f0fdf4;" vertex="1" parent="1">
+          <mxGeometry x="350" y="160" width="220" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="nextjs-title" value="&lt;b&gt;Docker Container&lt;/b&gt;&lt;br&gt;&lt;i&gt;anketa_app&lt;/i&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=11;fontColor=#166534;" vertex="1" parent="1">
+          <mxGeometry x="390" y="165" width="140" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- Next.js App -->
+        <mxCell id="nextjs-app" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#22c55e;fillColor=#dcfce7;" vertex="1" parent="1">
+          <mxGeometry x="370" y="210" width="180" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="nextjs-app-label" value="&lt;b&gt;Next.js 14&lt;/b&gt;&lt;br&gt;&lt;br&gt;Frontend (React)&lt;br&gt;+ API Routes&lt;br&gt;&lt;br&gt;Port: 3000" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=11;fontColor=#166534;" vertex="1" parent="1">
+          <mxGeometry x="380" y="215" width="160" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- MySQL Container -->
+        <mxCell id="mysql-container" value="" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#ea580c;fillColor=#fff7ed;" vertex="1" parent="1">
+          <mxGeometry x="630" y="160" width="220" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="mysql-title" value="&lt;b&gt;Docker Container&lt;/b&gt;&lt;br&gt;&lt;i&gt;anketa_db&lt;/i&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=11;fontColor=#c2410c;" vertex="1" parent="1">
+          <mxGeometry x="670" y="165" width="140" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- MySQL DB -->
+        <mxCell id="mysql-db" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;strokeColor=#f97316;fillColor=#ffedd5;" vertex="1" parent="1">
+          <mxGeometry x="690" y="210" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="mysql-db-label" value="&lt;b&gt;MySQL 8.0&lt;/b&gt;&lt;br&gt;Port: 3306" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=11;fontColor=#c2410c;" vertex="1" parent="1">
+          <mxGeometry x="690" y="230" width="100" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Database name -->
+        <mxCell id="db-name" value="Database: &lt;b&gt;anketa&lt;/b&gt;&lt;br&gt;Table: &lt;b&gt;options&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=10;fontColor=#9a3412;" vertex="1" parent="1">
+          <mxGeometry x="680" y="300" width="120" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow Next.js to MySQL -->
+        <mxCell id="arrow-app-db" value="TCP/IP&lt;br&gt;mysql2" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeWidth=2;strokeColor=#f97316;fontColor=#ea580c;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="275" as="sourcePoint" />
+            <mxPoint x="630" y="275" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Volumes -->
+        <mxCell id="volume-mysql" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;strokeColor=#94a3b8;fillColor=#f1f5f9;" vertex="1" parent="1">
+          <mxGeometry x="700" y="410" width="80" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="volume-mysql-label" value="&lt;b&gt;mysql_data&lt;/b&gt;&lt;br&gt;(volume)" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=10;fontColor=#475569;" vertex="1" parent="1">
+          <mxGeometry x="690" y="460" width="100" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow MySQL to Volume -->
+        <mxCell id="arrow-db-volume" value="persist" style="endArrow=classic;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=1;dashed=1;strokeColor=#64748b;fontColor=#64748b;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="740" y="360" as="sourcePoint" />
+            <mxPoint x="740" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Port mapping -->
+        <mxCell id="port-mapping" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#22c55e;fillColor=#dcfce7;" vertex="1" parent="1">
+          <mxGeometry x="350" y="410" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="port-label" value="&lt;b&gt;localhost:3000&lt;/b&gt;&lt;br&gt;(exposed)" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=10;fontColor=#166534;" vertex="1" parent="1">
+          <mxGeometry x="355" y="415" width="110" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow Container to Port -->
+        <mxCell id="arrow-container-port" value="" style="endArrow=classic;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeWidth=1;dashed=1;strokeColor=#64748b;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="410" y="360" as="sourcePoint" />
+            <mxPoint x="410" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend-box" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#e2e8f0;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="80" y="350" width="180" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-title" value="&lt;b&gt;Legenda&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=11;fontColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="130" y="355" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-1" value="-- HTTP Request" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontColor=#0ea5e9;" vertex="1" parent="1">
+          <mxGeometry x="90" y="380" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-2" value="-- DB Connection" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontColor=#f97316;" vertex="1" parent="1">
+          <mxGeometry x="90" y="400" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-3" value="- - Volume Mount" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontColor=#64748b;" vertex="1" parent="1">
+          <mxGeometry x="90" y="420" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-4" value="[ ] Docker Container" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontColor=#16a34a;" vertex="1" parent="1">
+          <mxGeometry x="90" y="440" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend-5" value="( ) Persistent Volume" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=10;fontColor=#64748b;" vertex="1" parent="1">
+          <mxGeometry x="90" y="460" width="120" height="20" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
