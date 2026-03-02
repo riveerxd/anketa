@@ -15,7 +15,15 @@ interface VoterRow extends RowDataPacket {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { success: false, error: 'Neplatný požadavek' },
+        { status: 400 }
+      );
+    }
     const { optionId } = body;
 
     // Get voter ID from cookie
