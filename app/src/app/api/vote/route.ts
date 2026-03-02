@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
 
     const totalVotes = rows.reduce((sum, row) => sum + row.votes, 0);
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       message: 'Hlas byl zaznamenan',
       data: {
@@ -97,6 +97,15 @@ export async function POST(request: NextRequest) {
         totalVotes,
       },
     });
+
+    // Store voted option in cookie
+    response.cookies.set('voted_option', String(optionId), {
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+      sameSite: 'lax',
+      path: '/',
+    });
+
+    return response;
   } catch (error) {
     console.error('Database error:', error);
     return NextResponse.json(

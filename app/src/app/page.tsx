@@ -54,15 +54,21 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [hasVoted, setHasVoted] = useState(false);
   const [checkingVote, setCheckingVote] = useState(true);
+  const [votedOptionId, setVotedOptionId] = useState<number | null>(null);
 
   const question = 'Kolik šálků kávy denně je ještě normální?';
 
-  // Initialize voter ID cookie
+  // Initialize voter ID cookie and read voted option
   useEffect(() => {
     let voterId = getCookie('voter_id');
     if (!voterId) {
       voterId = generateUUID();
       setCookie('voter_id', voterId);
+    }
+
+    const votedOption = getCookie('voted_option');
+    if (votedOption) {
+      setVotedOptionId(parseInt(votedOption, 10));
     }
   }, []);
 
@@ -127,6 +133,7 @@ export default function Home() {
         setResults(data.data);
         setShowResults(true);
         setHasVoted(true);
+        setVotedOptionId(selectedOption);
         setMessage({ type: 'success', text: 'Hlas byl zaznamenán!' });
       } else {
         if (data.alreadyVoted) {
@@ -277,18 +284,27 @@ export default function Home() {
                 const percentage = results.totalVotes > 0
                   ? Math.round((option.votes / results.totalVotes) * 100)
                   : 0;
+                const isUserVote = option.id === votedOptionId;
 
                 return (
-                  <div key={option.id}>
+                  <div key={option.id} className={cn(isUserVote && "ring-2 ring-amber-400 rounded-lg p-3 -m-1")}>
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="text-sm text-slate-700">
                         <span className="font-medium">{option.label})</span> {option.text}
+                        {isUserVote && (
+                          <span className="ml-2 text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">
+                            Vaše volba
+                          </span>
+                        )}
                       </span>
                       <span className="text-sm font-medium text-slate-900">{percentage}%</span>
                     </div>
                     <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-slate-900 rounded-full transition-all duration-500"
+                        className={cn(
+                          "h-full rounded-full transition-all duration-500",
+                          isUserVote ? "bg-amber-500" : "bg-slate-900"
+                        )}
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
